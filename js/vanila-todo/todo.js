@@ -1,28 +1,28 @@
 class Todo {
     constructor() {
         var _this = this;
-        this.list = JSON.parse(localStorage.getItem('todo-list')) || [];
-        this.el = document.querySelector(".todo-wrap");
-        this.listItems = document.createElement('ul');
-        this.listItems.addEventListener("click", function(e){
-            if( e.target && e.target.classList.contains("remove-task-button") ) {
+        _this.list = JSON.parse(localStorage.getItem('todo-list')) || [];
+        _this.el = document.querySelector(".todo-wrap");
+        _this.listItems = document.createElement('ul');
+        _this.listItems.addEventListener("click", function(e){
+            if( e && e.target && e.target.classList.contains("remove-task-button") ) {
                 _this.removeTask(e.target.parentNode.dataset.index);
             }
         });
-        this.listItems.addEventListener("click", function(e){
-            if( e.target && e.target.classList.contains("complite-task-checkbox") ) {
+        _this.listItems.addEventListener("click", function(e){
+            if( e && e.target && e.target.classList.contains("complite-task-checkbox") ) {
                 _this.compliteTask(e.target.parentNode.querySelector(".complite-task-checkbox"), e.target.parentNode.dataset.index);
             }
         });
-        this.listItems.addEventListener("click", function(e){
-            if( e.target && e.target.classList.contains("edit-task-button") ) {
+        _this.listItems.addEventListener("click", function(e){
+            if( e && e.target && e.target.classList.contains("edit-task-button") ) {
                 _this.editTask(e.target.parentNode, e.target.parentNode.dataset.index);
             }
         });
-        this.listItems.className = 'todo-list';
-        this.el.appendChild(this.listItems);
-        this.buildList();
-        this.buildAddForm();
+        _this.listItems.className = 'todo-list';
+        _this.el.appendChild(_this.listItems);
+        _this.buildList();
+        _this.buildAddForm();
     }
     buildList() {
         this.listItems.innerHTML = this.list.map(function(val, index) {
@@ -54,10 +54,10 @@ class Todo {
         this.buildList();
     }
     editTask(element, id) {
-        var allItems = this.list;
-        var elementDesc = element.querySelector(".task-desc");
-        var elementButtEdit = element.querySelector(".edit-task-button");
-        if ( element.dataset.edit != "true" ) {
+        var allItems = this.list,
+            elementDesc = element.querySelector(".task-desc"),
+            elementButtEdit = element.querySelector(".edit-task-button");
+        if ( "true" != element.dataset.edit ) {
             var input = document.createElement("input");
             input.setAttribute("type", "text");
             input.setAttribute("value", elementDesc.textContent);
@@ -86,16 +86,18 @@ class Todo {
         localStorage.setItem('todo-list', JSON.stringify(allItems));
     }
     buildAddForm() {
-        var _this = this;
-        var addForm = document.createElement('div');
-        var inputButton = document.createElement('input');
-            inputButton.className = "add-task-text";
-            inputButton.setAttribute("type", "text");
-            inputButton.setAttribute("placeholder", "What add in todo? Nothing");
-        var addButton = document.createElement('button');
-            addButton.className = "add-task-button";
-            addButton.setAttribute("type", "button");
-            addButton.textContent = "+";
+        var _this = this,
+            addForm = document.createElement('div'),
+            inputButton = document.createElement('input'),
+            addButton = document.createElement('button');
+
+        inputButton.className = "add-task-text";
+        inputButton.setAttribute("type", "text");
+        inputButton.setAttribute("placeholder", "What add in todo? Nothing");
+
+        addButton.className = "add-task-button";
+        addButton.setAttribute("type", "button");
+        addButton.textContent = "+";
 
         addForm.className = 'add-form-line';
         addForm.appendChild(inputButton);
@@ -105,6 +107,6 @@ class Todo {
             _this.addTask(inputButton.value, false);
             inputButton.value = "";
         });
-        this.el.prepend(addForm);
+        _this.el.prepend(addForm);
     }
 }

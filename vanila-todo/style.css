@@ -88,7 +88,11 @@ h1 {
     transition: all 500ms ease;
     -webkit-border-radius: 0 21px 21px 0;
     border-radius: 0 21px 21px 0;
+    background: transparent;
 }
 .add-form-line .add-task-button:hover {
     text-shadow: 0 0 10px #B163FF;
+}
+.complite-task-checkbox:checked + .task-desc {
+    text-decoration: line-through;
 }

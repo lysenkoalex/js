@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Vanila shop</title>
+    <link href="https://fonts.googleapis.com/css?family=Lato:300,400" rel="stylesheet">
+    <link rel="stylesheet" href="style.css" />
+    <script src="shop.js"></script>
+</head>
+<body>
+    <button type="button" onclick="alert(JSON.stringify(products))">Show product object</button>
+    
+
+
+    <script>
+        var products = (
+            {
+                id: "21231",
+                name: 'Name of product',
+                desc: "some short description",
+                price: "12.99"
+            },
+            {
+                id: "HOST",
+                name: 'Some hosting',
+                desc: "some short description of hosting",
+                price: "13.99"
+            },
+            {
+                id: "Book",
+                name: 'Some Book',
+                desc: "some short description of Book",
+                price: "13.99"
+            }
+        )
+        shop = new Shop(products);
+    </script>
+</body>
+</html>

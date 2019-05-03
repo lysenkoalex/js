@@ -10,12 +10,20 @@
     <script src="shop.js"></script>
 </head>
 <body>
-    <button type="button" onclick="alert(JSON.stringify(products))">Show product object</button>
+    <button type="button" onclick="console.info(products)">Show product object</button>
     
+    <div class="cart-wrap">
+        <div class="left-cart">
+            <div class="js-product-list-wrap"></div>
+        </div>
+        <div class="right-cart">
+            <div class="js-cart-wrap"></div>
+        </div>
+    </div>
 
 
     <script>
-        var products = (
+        var products = [
             {
                 id: "21231",
                 name: 'Name of product',
@@ -29,13 +37,23 @@
                 price: "13.99"
             },
             {
-                id: "Book",
+                id: "BOOK_1",
                 name: 'Some Book',
                 desc: "some short description of Book",
                 price: "13.99"
             }
-        )
+        ]
         shop = new Shop(products);
+    </script>
+    <script type="text/template" id="listOfProducts">
+        <ul class="products-list"></ul>
+    </script>
+    <script type="text/template" id="oneProductInList">
+        <li>
+            <span class="js-product-name">NAME</span>
+            <span class="js-product-price">$xx.xx</span>
+            <button class="js-add-product-button" data-pr-id="NAME">ADD</button>
+        </li>
     </script>
 </body>
 </html>

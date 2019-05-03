@@ -12,9 +12,9 @@
 <body>
     <button type="button" onclick="console.info(products)">Show product object</button>
     
-    <div class="cart-wrap">
+    <div class="cart-wrap js-cart-parent">
         <div class="left-cart">
-            <div class="js-product-list-wrap"></div>
+            <ul class="js-product-list-wrap"></ul>
         </div>
         <div class="right-cart">
             <div class="js-cart-wrap"></div>
@@ -22,6 +22,18 @@
     </div>
 
 
+    
+    <script type="text/template" id="listOfProducts">
+        <ul class="products-list"></ul>
+    </script>
+    <script type="text/template" id="oneProductInList">
+        <li>
+            <h2 class="js-product-name">Name</h2>
+            <p class="js-product-desc">Description</p>
+            <span class="js-product-price">$xx.xx</span>
+            <button class="js-add-product-button" data-pr-id="NAME">ADD</button>
+        </li>
+    </script>
     <script>
         var products = [
             {
@@ -44,16 +56,6 @@
             }
         ]
         shop = new Shop(products);
-    </script>
-    <script type="text/template" id="listOfProducts">
-        <ul class="products-list"></ul>
-    </script>
-    <script type="text/template" id="oneProductInList">
-        <li>
-            <span class="js-product-name">NAME</span>
-            <span class="js-product-price">$xx.xx</span>
-            <button class="js-add-product-button" data-pr-id="NAME">ADD</button>
-        </li>
     </script>
 </body>
 </html>

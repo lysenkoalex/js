@@ -1,9 +1,17 @@
 function Shop(productList) {
-    this.productList = productList || {};
-    this.cartWrapper = ( document.querySelector(".js-cart-parent") || {} ).innerHTML;
-    this.oneProductInList = ( document.getElementById("oneProductInList") || {} ).innerHTML;
-    this.listOfProducts = ( document.querySelector("#listOfProducts") || {} ).innerHTML;
-    this.buildProductLIst();
+    var _this = this;
+    _this.productList = productList || {};
+    _this.shoppingCart = _this.getShoppingList() || [];
+    _this.cartWrapper = ( document.querySelector(".js-cart-parent") || {} ).innerHTML;
+    _this.oneProductInList = ( document.querySelector("#oneProductInList") || {} ).innerHTML;
+    //_this.listOfProducts = ( document.querySelector("#listOfProducts") || {} ).innerHTML;
+
+    document.querySelector(".js-product-list-wrap").addEventListener("click", function(e){
+        if( e && e.target && e.target.classList.contains("js-add-product-button") ) {
+            _this.addToShoppingCart(e.target.dataset.prId, 1);
+        }
+    });
+    _this.buildProductLIst();
 }
 
 Shop.prototype.buildProductLIst = function(){
@@ -22,5 +30,24 @@ Shop.prototype.buildProductLIst = function(){
 };
 
 Shop.prototype.saveShoppingCart = function(){
-    
+    // oneElement = {
+    //     'productId': desc,
+    //     'quantity': desc,
+    // };
+    //localStorage.setItem('shopingCart', JSON.stringify(allItems));
 };
+Shop.prototype.addToShoppingCart = function(productId, quantity){
+
+    var allListInCart = this.shoppingCart,
+        newItem = {
+            'productId': productId,
+            'quantity': quantity
+        };
+        // Need write For
+    allListInCart.push(newItem);
+    localStorage.setItem('shopingCart', JSON.stringify(allListInCart));
+    
+}
+Shop.prototype.getShoppingList = function(data){
+    return JSON.parse(localStorage.getItem('shopingCart'));
+}

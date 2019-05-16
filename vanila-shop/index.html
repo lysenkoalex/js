@@ -11,7 +11,7 @@
 </head>
 <body>
     <button type="button" onclick="console.info(products)">Show product object</button>
-    
+
     <div class="cart-wrap js-cart-parent">
         <div class="left-cart">
             <ul class="js-product-list-wrap"></ul>
@@ -22,7 +22,7 @@
     </div>
 
 
-    
+
     <script type="text/template" id="listOfProducts">
         <ul class="products-list"></ul>
     </script>
@@ -33,6 +33,19 @@
             <span class="js-product-price">$xx.xx</span>
             <button class="js-add-product-button" data-pr-id="NAME">ADD</button>
         </li>
+    </script>
+    <script type="text/template" id="shoppingCartT">
+        <div class="shoppingCartWrap">
+          <div class="js-one-product-line">
+            <div>name</div>
+            <div>quantity</div>
+            <div>
+              <button type="button" class="js-minus-quantity">-</button>
+              <button type="button" class="js-plus-quantity">+</button>
+            </div>
+            <div>$price</div>
+          </div>
+      </div>
     </script>
     <script>
         var products = [

@@ -38,8 +38,17 @@ Shop.prototype.buildProductLIst = function(){
 };
 
 Shop.prototype.buildShoppingCart = function(){
-    var shopingCartT = document.createElement("div");
-    shopingCartT.innerHTML = this.listOfShoppingCart;
+    var shopingCartT = document.createElement("div"),
+        self = this;
+    shopingCartT.innerHTML = this.shoppingCart.map(function(val){
+        var oneElem = document.createElement('div');
+        oneElem.innerHTML = self.listOfShoppingCart;
+        oneElem.querySelector(".js-one-product-name").textContent = val.productId;
+        oneElem.querySelector(".js-one-product-quantity").textContent = val.quantity;
+        oneElem.querySelector(".js-one-product-price").textContent = '$' + val.quantity;
+        return oneElem.innerHTML;
+    }).join('');
+    document.querySelector(".js-cart-wrap").innerHTML = shopingCartT.innerHTML;
     console.log(shopingCartT);
 }
 

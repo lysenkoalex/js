@@ -17,7 +17,7 @@
             <ul class="js-product-list-wrap"></ul>
         </div>
         <div class="right-cart">
-            <div class="js-cart-wrap"></div>
+            <div class="js-cart-wrap shoppingCartWrap"></div>
         </div>
     </div>
 
@@ -35,17 +35,15 @@
         </li>
     </script>
     <script type="text/template" id="shoppingCartT">
-        <div class="shoppingCartWrap">
-          <div class="js-one-product-line">
-            <div>name</div>
-            <div>quantity</div>
-            <div>
-              <button type="button" class="js-minus-quantity">-</button>
-              <button type="button" class="js-plus-quantity">+</button>
-            </div>
-            <div>$price</div>
+        <div class="js-one-product-line">
+          <div class="js-one-product-name">name</div>
+          <div class="js-one-product-quantity">quantity</div>
+          <div>
+            <button type="button" class="js-minus-quantity">-</button>
+            <button type="button" class="js-plus-quantity">+</button>
           </div>
-      </div>
+          <div class="js-one-product-price">$price</div>
+        </div>
     </script>
     <script>
         var products = [

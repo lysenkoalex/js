@@ -6,17 +6,11 @@ function Shop(productList) {
     _this.oneProductInList = ( document.querySelector("#oneProductInList") || {} ).innerHTML;
     _this.listOfShoppingCart = ( document.querySelector("#shoppingCartT") || {} ).innerHTML;
 
-    // document.querySelector(".js-product-list-wrap").addEventListener("click", function(e){
-    //     if( e && e.target && e.target.classList.contains("js-add-product-button") ) {
-    //         _this.addToShoppingCart(e.target.dataset.prId, 1);
-    //     }
-    // });
-
-    document.querySelector(".js-product-list-wrap").addEventListener("click", function(e){
-        if( e && e.target && e.target.classList.contains("js-add-product-button") ) {
-            _this.removeToShoppingCart(e.target.dataset.prId);
-        }
-    });
+     document.querySelector(".js-product-list-wrap").addEventListener("click", function(e){
+         if( e && e.target && e.target.classList.contains("js-add-product-button") ) {
+             _this.addToShoppingCart(e.target.dataset.prId, 1);
+         }
+     });
 
     _this.buildProductLIst();
     _this.buildShoppingCart();
@@ -43,12 +37,19 @@ Shop.prototype.buildShoppingCart = function(){
     shopingCartT.innerHTML = this.shoppingCart.map(function(val){
         var oneElem = document.createElement('div');
         oneElem.innerHTML = self.listOfShoppingCart;
+        oneElem.dataset.prId = val.productId;
         oneElem.querySelector(".js-one-product-name").textContent = val.productId;
         oneElem.querySelector(".js-one-product-quantity").textContent = val.quantity;
         oneElem.querySelector(".js-one-product-price").textContent = '$' + val.quantity;
         return oneElem.innerHTML;
     }).join('');
     document.querySelector(".js-cart-wrap").innerHTML = shopingCartT.innerHTML;
+
+    document.querySelector(".js-one-product-line").addEventListener("click", function(e){
+        if( e && e.target && e.target.classList.contains("js-plus-quantity") ) {
+            self.removeToShoppingCart(e.target.dataset.prId);
+        }
+    });
     console.log(shopingCartT);
 }
 

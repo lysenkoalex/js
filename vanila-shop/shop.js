@@ -35,22 +35,25 @@ Shop.prototype.buildShoppingCart = function(){
     var shopingCartT = document.createElement("div"),
         self = this;
     shopingCartT.innerHTML = this.shoppingCart.map(function(val){
-        var oneElem = document.createElement('div');
+        var oneElem = document.createElement('div'),
+        itemElem = products.find(item => item.id == val.productId);
         oneElem.innerHTML = self.listOfShoppingCart;
-        oneElem.dataset.prId = val.productId;
-        oneElem.querySelector(".js-one-product-name").textContent = val.productId;
+        oneElem.querySelector(".js-one-product-name").textContent = itemElem.name;
         oneElem.querySelector(".js-one-product-quantity").textContent = val.quantity;
-        oneElem.querySelector(".js-one-product-price").textContent = '$' + val.quantity;
+        oneElem.querySelector(".js-one-product-price").textContent = '$' + val.quantity * itemElem.price;
+        oneElem.querySelector(".js-one-product-line").dataset.prId = val.productId;
         return oneElem.innerHTML;
     }).join('');
     document.querySelector(".js-cart-wrap").innerHTML = shopingCartT.innerHTML;
 
-    document.querySelector(".js-one-product-line").addEventListener("click", function(e){
+    document.querySelector(".js-cart-wrap").addEventListener("click", function(e){
+        if( e && e.target && e.target.classList.contains("js-minus-quantity") ) {
+            self.removeToShoppingCart(e.target.parentNode.parentNode.dataset.prId);
+        }
         if( e && e.target && e.target.classList.contains("js-plus-quantity") ) {
-            self.removeToShoppingCart(e.target.dataset.prId);
+            self.addToShoppingCart(e.target.parentNode.parentNode.dataset.prId);
         }
     });
-    console.log(shopingCartT);
 }
 
 Shop.prototype.addToShoppingCart = function(productId, quantity){
@@ -82,7 +85,7 @@ Shop.prototype.removeToShoppingCart = function(productId){
             if( 1 < allListInCart[i].quantity) {
                 allListInCart[i].quantity -= 1;
             } else {
-                allListInCart.splice(i);
+                allListInCart.splice(i, 1);
             }
         }
     }

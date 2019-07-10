@@ -26,6 +26,7 @@
     <script type="text/template" id="listOfProducts">
         <ul class="products-list"></ul>
     </script>
+
     <script type="text/template" id="oneProductInList">
         <li>
             <h2 class="js-product-name">Name</h2>
@@ -34,6 +35,7 @@
             <button class="js-add-product-button" data-pr-id="NAME">ADD</button>
         </li>
     </script>
+
     <script type="text/template" id="shoppingCartT">
         <div class="js-one-product-line">
           <div class="js-one-product-name">name</div>
@@ -45,6 +47,14 @@
           <div class="js-one-product-price">$price</div>
         </div>
     </script>
+
+    <script type="text/template" id="shoppingCartTotalT">
+      <div class="js-cart-total-line">
+        <div><b>Total:</b></div>
+        <div class="js-cart-total"></div>
+      </div>
+    </script>
+
     <script>
         var products = [
             {

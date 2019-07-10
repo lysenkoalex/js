@@ -5,10 +5,20 @@ function Shop(productList) {
     _this.cartWrapper = ( document.querySelector(".js-cart-parent") || {} ).innerHTML;
     _this.oneProductInList = ( document.querySelector("#oneProductInList") || {} ).innerHTML;
     _this.listOfShoppingCart = ( document.querySelector("#shoppingCartT") || {} ).innerHTML;
+    _this.totalLine = ( document.querySelector("#shoppingCartTotalT") || {} ).innerHTML;
 
      document.querySelector(".js-product-list-wrap").addEventListener("click", function(e){
          if( e && e.target && e.target.classList.contains("js-add-product-button") ) {
              _this.addToShoppingCart(e.target.dataset.prId, 1);
+         }
+     });
+
+     document.querySelector(".shoppingCartWrap").addEventListener("click", function(e){
+         if( e && e.target && e.target.classList.contains("js-minus-quantity") ) {
+             _this.removeToShoppingCart(e.target.parentNode.parentNode.dataset.prId);
+         }
+         if( e && e.target && e.target.classList.contains("js-plus-quantity") ) {
+             _this.addToShoppingCart(e.target.parentNode.parentNode.dataset.prId);
          }
      });
 
@@ -33,27 +43,24 @@ Shop.prototype.buildProductLIst = function(){
 
 Shop.prototype.buildShoppingCart = function(){
     var shopingCartT = document.createElement("div"),
-        self = this;
+        totalLineT = document.createElement("div"),
+        self = this,
+        totalPrice = 0;
     shopingCartT.innerHTML = this.shoppingCart.map(function(val){
         var oneElem = document.createElement('div'),
         itemElem = products.find(item => item.id == val.productId);
         oneElem.innerHTML = self.listOfShoppingCart;
         oneElem.querySelector(".js-one-product-name").textContent = itemElem.name;
         oneElem.querySelector(".js-one-product-quantity").textContent = val.quantity;
-        oneElem.querySelector(".js-one-product-price").textContent = '$' + val.quantity * itemElem.price;
+        oneElem.querySelector(".js-one-product-price").textContent = '$' + (val.quantity * itemElem.price).toFixed(2);
         oneElem.querySelector(".js-one-product-line").dataset.prId = val.productId;
+        totalPrice += val.quantity * itemElem.price;
         return oneElem.innerHTML;
     }).join('');
+    totalLineT.innerHTML = this.totalLine;
+    totalLineT.querySelector(".js-cart-total").textContent = totalPrice.toFixed(2) ;
+    shopingCartT.innerHTML += totalLineT.innerHTML;
     document.querySelector(".js-cart-wrap").innerHTML = shopingCartT.innerHTML;
-
-    document.querySelector(".js-cart-wrap").addEventListener("click", function(e){
-        if( e && e.target && e.target.classList.contains("js-minus-quantity") ) {
-            self.removeToShoppingCart(e.target.parentNode.parentNode.dataset.prId);
-        }
-        if( e && e.target && e.target.classList.contains("js-plus-quantity") ) {
-            self.addToShoppingCart(e.target.parentNode.parentNode.dataset.prId);
-        }
-    });
 }
 
 Shop.prototype.addToShoppingCart = function(productId, quantity){
@@ -63,7 +70,6 @@ Shop.prototype.addToShoppingCart = function(productId, quantity){
             'productId': productId,
             'quantity': quantity
         };
-        // Need write For
 
     for(var i=0; i<allListInCart.length; i++) {
         if(allListInCart[i].productId == productId) {
@@ -75,6 +81,7 @@ Shop.prototype.addToShoppingCart = function(productId, quantity){
         allListInCart.push(newItem);
     }
     this.saveShoppingCart(allListInCart);
+    this.buildShoppingCart();
 }
 
 Shop.prototype.removeToShoppingCart = function(productId){
@@ -90,6 +97,7 @@ Shop.prototype.removeToShoppingCart = function(productId){
         }
     }
     this.saveShoppingCart(allListInCart);
+    this.buildShoppingCart();
 }
 
 Shop.prototype.saveShoppingCart = function(data){

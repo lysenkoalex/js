@@ -5,14 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Vanila shop</title>
-    <link href="https://fonts.googleapis.com/css?family=Lato:300,400" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Lato:400,700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css" />
     <script src="shop.js"></script>
 </head>
 <body>
     <button type="button" onclick="console.info(products)">Show product object</button>
 
-    <div class="js-cart-parent cart-wrap">
+    <div class="js-cart-parent cart-wrap clearfix">
         <div class="left-cart">
             <ul class="js-product-list-wrap product-list-wrap"></ul>
         </div>
@@ -28,11 +28,11 @@
     </script>
 
     <script type="text/template" id="oneProductInList">
-        <li>
-            <h2 class="js-product-name">Name</h2>
-            <p class="js-product-desc">Description</p>
-            <span class="js-product-price">$xx.xx</span>
-            <button class="js-add-product-button" data-pr-id="NAME">ADD</button>
+        <li class="list-product-line">
+            <h2 class="js-product-name product-name">Name</h2>
+            <p class="js-product-desc product-desc">Description</p>
+            <span class="js-product-price product-price">$xx.xx</span>
+            <button class="js-add-product-button btn btn-primary" data-pr-id="NAME">ADD</button>
         </li>
     </script>
 

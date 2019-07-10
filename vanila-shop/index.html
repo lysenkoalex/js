@@ -12,12 +12,12 @@
 <body>
     <button type="button" onclick="console.info(products)">Show product object</button>
 
-    <div class="cart-wrap js-cart-parent">
+    <div class="js-cart-parent cart-wrap">
         <div class="left-cart">
-            <ul class="js-product-list-wrap"></ul>
+            <ul class="js-product-list-wrap product-list-wrap"></ul>
         </div>
         <div class="right-cart">
-            <div class="js-cart-wrap shoppingCartWrap"></div>
+            <div class="js-cart-wrap shopping-cart-wrap"></div>
         </div>
     </div>
 
@@ -37,21 +37,21 @@
     </script>
 
     <script type="text/template" id="shoppingCartT">
-        <div class="js-one-product-line">
-          <div class="js-one-product-name">name</div>
-          <div class="js-one-product-quantity">quantity</div>
-          <div>
+        <div class="js-one-product-line product-line">
+          <div class="js-one-product-name product-name">name</div>
+          <div class="js-one-product-quantity product-quantity">quantity</div>
+          <div class="buttons-wrap">
             <button type="button" class="js-minus-quantity">-</button>
             <button type="button" class="js-plus-quantity">+</button>
           </div>
-          <div class="js-one-product-price">$price</div>
+          <div class="js-one-product-price product-price">$price</div>
         </div>
     </script>
 
     <script type="text/template" id="shoppingCartTotalT">
-      <div class="js-cart-total-line">
+      <div class="js-cart-total-line total-line-wrap">
         <div><b>Total:</b></div>
-        <div class="js-cart-total"></div>
+        <div class="js-cart-total total-line"></div>
       </div>
     </script>
 

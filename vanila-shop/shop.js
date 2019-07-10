@@ -13,7 +13,7 @@ function Shop(productList) {
          }
      });
 
-     document.querySelector(".shoppingCartWrap").addEventListener("click", function(e){
+     document.querySelector(".js-cart-wrap").addEventListener("click", function(e){
          if( e && e.target && e.target.classList.contains("js-minus-quantity") ) {
              _this.removeToShoppingCart(e.target.parentNode.parentNode.dataset.prId);
          }

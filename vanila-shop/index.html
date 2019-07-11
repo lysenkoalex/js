@@ -14,9 +14,11 @@
 
     <div class="js-cart-parent cart-wrap clearfix">
         <div class="left-cart">
+            <h2>Product List</h2>
             <ul class="js-product-list-wrap product-list-wrap"></ul>
         </div>
         <div class="right-cart">
+            <h2 class="text-center">Cart</h2>
             <div class="js-cart-wrap shopping-cart-wrap"></div>
         </div>
     </div>
@@ -29,7 +31,7 @@
 
     <script type="text/template" id="oneProductInList">
         <li class="list-product-line">
-            <h2 class="js-product-name product-name">Name</h2>
+            <h3 class="js-product-name product-name">Name</h3>
             <p class="js-product-desc product-desc">Description</p>
             <span class="js-product-price product-price">$xx.xx</span>
             <button class="js-add-product-button btn btn-primary" data-pr-id="NAME">ADD</button>
@@ -39,12 +41,12 @@
     <script type="text/template" id="shoppingCartT">
         <div class="js-one-product-line product-line">
           <div class="js-one-product-name product-name">name</div>
-          <div class="js-one-product-quantity product-quantity">quantity</div>
+          <div class="js-one-product-price product-price">$price</div>
           <div class="buttons-wrap">
             <button type="button" class="js-minus-quantity">-</button>
             <button type="button" class="js-plus-quantity">+</button>
           </div>
-          <div class="js-one-product-price product-price">$price</div>
+          <div class="js-one-product-quantity product-quantity">quantity</div>
         </div>
     </script>
 
@@ -53,6 +55,10 @@
         <div><b>Total:</b></div>
         <div class="js-cart-total total-line"></div>
       </div>
+    </script>
+
+    <script type="text/template" id="emptyCartWarning">
+        <div class="text-center js-empty-cart">Your cart is empty</div>
     </script>
 
     <script>

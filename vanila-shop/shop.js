@@ -6,6 +6,7 @@ function Shop(productList) {
     _this.oneProductInList = ( document.querySelector("#oneProductInList") || {} ).innerHTML;
     _this.listOfShoppingCart = ( document.querySelector("#shoppingCartT") || {} ).innerHTML;
     _this.totalLine = ( document.querySelector("#shoppingCartTotalT") || {} ).innerHTML;
+    _this.emptyWarningLine = ( document.querySelector("#emptyCartWarning") || {} ).innerHTML;
 
      document.querySelector(".js-product-list-wrap").addEventListener("click", function(e){
          if( e && e.target && e.target.classList.contains("js-add-product-button") ) {
@@ -46,6 +47,12 @@ Shop.prototype.buildShoppingCart = function(){
         totalLineT = document.createElement("div"),
         self = this,
         totalPrice = 0;
+    if (Object.keys(this.shoppingCart).length === 0){
+      var emptyLineT =  document.createElement("div");
+      emptyLineT.innerHTML = this.emptyWarningLine;
+      document.querySelector(".js-cart-wrap").innerHTML = emptyLineT.innerHTML;
+      return;
+    }
     shopingCartT.innerHTML = this.shoppingCart.map(function(val){
         var oneElem = document.createElement('div'),
         itemElem = products.find(item => item.id == val.productId);
@@ -58,7 +65,7 @@ Shop.prototype.buildShoppingCart = function(){
         return oneElem.innerHTML;
     }).join('');
     totalLineT.innerHTML = this.totalLine;
-    totalLineT.querySelector(".js-cart-total").textContent = totalPrice.toFixed(2) ;
+    totalLineT.querySelector(".js-cart-total").textContent = '$' + totalPrice.toFixed(2) ;
     shopingCartT.innerHTML += totalLineT.innerHTML;
     document.querySelector(".js-cart-wrap").innerHTML = shopingCartT.innerHTML;
 }

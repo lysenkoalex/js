@@ -10,7 +10,6 @@
     <script src="shop.js"></script>
 </head>
 <body>
-    <button type="button" onclick="console.info(products)">Show product object</button>
 
     <div class="js-cart-parent cart-wrap clearfix">
         <div class="left-cart">
@@ -18,7 +17,7 @@
             <ul class="js-product-list-wrap product-list-wrap"></ul>
         </div>
         <div class="right-cart">
-            <h2 class="text-center">Cart</h2>
+            <h2 class="text-center">Cart <small class="js-count-products"></small></h2>
             <div class="js-cart-wrap shopping-cart-wrap"></div>
         </div>
     </div>
@@ -79,7 +78,7 @@
                 id: "BOOK_1",
                 name: 'Some Book',
                 desc: "some short description of Book",
-                price: "13.99"
+                price: "27.30"
             }
         ]
         shop = new Shop(products);

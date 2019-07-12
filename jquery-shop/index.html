@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>jQuery shop</title>
+    <link href="https://fonts.googleapis.com/css?family=Lato:400,700&display=swap" rel="stylesheet">
+    <script src="js/jquery-3.4.1.min.js"></script>
+    <script src="js/script.js"></script>
+</head>
+<body>
+
+  jQuery
+
+  <div class="">
+    <div class="left">
+
+      <div class="js-product-wrap"></div>
+
+    </div>
+    <div class="right">
+
+    </div>
+  </div>
+
+  <div class="templates" style="display: none;">
+    <div class="js-one-product">
+        <h3 class="js-product-name">Product Name</h3>
+        <p class="js-product-desc">Product Desc</p>
+        <p class="js-product-price">Product Price</p>
+        <button>ADD</button>
+    </div>
+  </div>
+
+  <script>
+    var products = [
+      {
+        id: "21231",
+        name: 'Name of product',
+        desc: "some short description",
+        price: "12.99"
+      },
+      {
+        id: "HOST",
+        name: 'Some hosting',
+        desc: "some short description of hosting",
+        price: "13.99"
+      },
+      {
+        id: "BOOK_1",
+        name: 'Some Book',
+        desc: "some short description of Book",
+        price: "27.30"
+      }
+    ]
+    jQuery(document).ready(function(){
+      cart = new CartPage(products);
+    });
+  </script>
+</body>
+</html>

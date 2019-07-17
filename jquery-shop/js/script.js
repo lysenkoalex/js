@@ -26,7 +26,6 @@ CartPage.prototype.buildList = function() {
 CartPage.prototype.buildShoppingCart = function() {
   var _this = this,
       parentWrap = jQuery(".js-shopping-wrap");
-
   $.each(this.shoppingList, function(index,value){
       parentWrap.append(_this.renderShoppingLine(value));
   });

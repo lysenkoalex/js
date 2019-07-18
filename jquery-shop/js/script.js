@@ -50,11 +50,16 @@ CartPage.prototype.renderShoppingLine = function(indexElement) {
 
 CartPage.prototype.addProduct = function(productId){
   var currentList = this.getShoppingList() || [],
-      newLineFlag = true;
+      _this = this,
+      newLineFlag = true,
+      parentWrap = jQuery(".js-shopping-wrap");
 
   for (var i=0; i < currentList.length; i++ ) {
     if (currentList[i].productId == productId) {
+      var oneLine = jQuery(parentWrap.find('.js-one-shopping-line')[i]);
       currentList[i].quantity += 1;
+      oneLine.after(_this.renderShoppingLine(currentList[i]));
+      oneLine.detach();
       newLineFlag = false;
       break;
     }
@@ -62,20 +67,27 @@ CartPage.prototype.addProduct = function(productId){
 
   if (newLineFlag) {
     currentList.push({'productId': productId, 'quantity': 1});
+    parentWrap.append(_this.renderShoppingLine(currentList[currentList.length - 1]));
   }
 
   this.saveShopingList(currentList);
 };
 
 CartPage.prototype.removeProduct = function(productId){
-  var currentList = this.getShoppingList();
+  var _this = this,
+      currentList = this.getShoppingList(),
+      parentWrap = jQuery(".js-shopping-wrap");
 
   for (var i=0; i < currentList.length; i++ ) {
+    var oneLine = jQuery(parentWrap.find('.js-one-shopping-line')[i]);
     if (currentList[i].productId == productId ) {
       if ( 1 < currentList[i].quantity ) {
         currentList[i].quantity -= 1;
+        oneLine.after(_this.renderShoppingLine(currentList[i]).html());
+        oneLine.detach();
       } else {
         currentList.splice(i, 1);
+        oneLine.detach();
       }
     }
   }

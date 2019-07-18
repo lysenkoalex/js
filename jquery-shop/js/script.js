@@ -2,9 +2,14 @@ function CartPage(productsList) {
   this.products = productsList,
   this.shoppingList = this.getShoppingList();
 
+  if(null == localStorage.getItem('shoppingCart')) {
+    localStorage.setItem('shoppingCart', JSON.stringify([]));
+  }
+
   this.buildList();
 
   this.buildShoppingCart();
+  this.renderTotalCount();
 }
 
 CartPage.prototype.buildList = function() {
@@ -45,6 +50,7 @@ CartPage.prototype.renderShoppingLine = function(indexElement) {
     templateElement.find(".js-quantity-minus").on("click", function() {
       _this.removeProduct(indexElement.productId);
     });
+
     return templateElement;
 }
 
@@ -71,6 +77,7 @@ CartPage.prototype.addProduct = function(productId){
   }
 
   this.saveShopingList(currentList);
+  this.renderTotalCount();
 };
 
 CartPage.prototype.removeProduct = function(productId){
@@ -83,7 +90,7 @@ CartPage.prototype.removeProduct = function(productId){
     if (currentList[i].productId == productId ) {
       if ( 1 < currentList[i].quantity ) {
         currentList[i].quantity -= 1;
-        oneLine.after(_this.renderShoppingLine(currentList[i]).html());
+        oneLine.after(_this.renderShoppingLine(currentList[i]));
         oneLine.detach();
       } else {
         currentList.splice(i, 1);
@@ -93,6 +100,7 @@ CartPage.prototype.removeProduct = function(productId){
   }
 
   this.saveShopingList(currentList);
+  this.renderTotalCount();
 }
 
 CartPage.prototype.saveShopingList = function(obj){
@@ -101,4 +109,14 @@ CartPage.prototype.saveShopingList = function(obj){
 
 CartPage.prototype.getShoppingList = function(){
     return JSON.parse(localStorage.getItem('shoppingCart'));
+}
+
+CartPage.prototype.renderTotalCount = function(){
+  var element = jQuery(".js-total-count"),
+      totalCount = 0,
+      shopList = this.getShoppingList();
+  for(var i=0; i < shopList.length; i++){
+    totalCount += shopList[i].quantity;
+  }
+  element.text(totalCount);
 }

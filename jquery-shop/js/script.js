@@ -10,6 +10,7 @@ function CartPage(productsList) {
 
   this.buildShoppingCart();
   this.renderTotalCount();
+  this.renderTotalPrice();
 }
 
 CartPage.prototype.buildList = function() {
@@ -78,6 +79,7 @@ CartPage.prototype.addProduct = function(productId){
 
   this.saveShopingList(currentList);
   this.renderTotalCount();
+  this.renderTotalPrice();
 };
 
 CartPage.prototype.removeProduct = function(productId){
@@ -101,6 +103,7 @@ CartPage.prototype.removeProduct = function(productId){
 
   this.saveShopingList(currentList);
   this.renderTotalCount();
+  this.renderTotalPrice();
 }
 
 CartPage.prototype.saveShopingList = function(obj){
@@ -119,4 +122,16 @@ CartPage.prototype.renderTotalCount = function(){
     totalCount += shopList[i].quantity;
   }
   element.text(totalCount);
+}
+
+CartPage.prototype.renderTotalPrice = function(){
+  var parentWrap = jQuery(".js-total-price-wrap"),
+      shopList = this.getShoppingList(),
+      totalPrice = 0;
+
+  for (var i=0; i < shopList.length; i++ ) {
+    totalPrice += shopList[i].quantity * this.products[shopList[i].productId].price;
+  }
+
+  parentWrap.find(".js-total-price-box").text("$" + totalPrice.toFixed(2));
 }

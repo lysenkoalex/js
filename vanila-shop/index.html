@@ -30,22 +30,22 @@
 
     <script type="text/template" id="oneProductInList">
         <li class="list-product-line">
-            <h3 class="js-product-name product-name">Name</h3>
-            <p class="js-product-desc product-desc">Description</p>
-            <span class="js-product-price product-price">$xx.xx</span>
-            <button class="js-add-product-button btn btn-primary" data-pr-id="NAME">ADD</button>
+            <h3 class="js-product-name product-name">{{name}}</h3>
+            <p class="js-product-desc product-desc">{{description}}</p>
+            <span class="js-product-price product-price">{{price}}</span>
+            <button class="js-add-product-button btn btn-primary" data-pr-id="{{product-id}}">ADD</button>
         </li>
     </script>
 
     <script type="text/template" id="shoppingCartT">
-        <div class="js-one-product-line product-line">
-          <div class="js-one-product-name product-name">name</div>
-          <div class="js-one-product-price product-price">$price</div>
+        <div class="js-one-product-line product-line" data-pr-id="{{product-id}}">
+          <div class="js-one-product-name product-name">{{name}}</div>
+          <div class="js-one-product-price product-price">{{price}}</div>
           <div class="buttons-wrap">
             <button type="button" class="js-minus-quantity">-</button>
             <button type="button" class="js-plus-quantity">+</button>
           </div>
-          <div class="js-one-product-quantity product-quantity">quantity</div>
+          <div class="js-one-product-quantity product-quantity">{{quantity}}</div>
         </div>
     </script>
 

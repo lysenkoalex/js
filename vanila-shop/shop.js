@@ -30,14 +30,17 @@ function Shop(productList) {
 Shop.prototype.buildProductLIst = function(){
     var listProductsDom = document.createElement("div"),
         self = this;
+
+    // str.replace(/{{sdfsdf}}/, 'content');
     listProductsDom.innerHTML = this.productList.map(function(val) {
-        var oneElem = document.createElement('div');
-        oneElem.innerHTML = self.oneProductInList;
-        oneElem.querySelector(".js-product-name").textContent = val.name;
-        oneElem.querySelector(".js-product-desc").textContent = val.desc;
-        oneElem.querySelector(".js-product-price").textContent = '$' + val.price;
-        oneElem.querySelector(".js-add-product-button").dataset.prId = val.id;
-        return oneElem.innerHTML;
+        var oneElem = self.oneProductInList;
+
+        oneElem = oneElem.replace(/{{name}}/g, val.name);
+        oneElem = oneElem.replace(/{{description}}/g, val.desc);
+        oneElem = oneElem.replace(/{{price}}/g, "$"+ val.price);
+        oneElem = oneElem.replace(/{{product-id}}/g, val.id);
+
+        return oneElem;
     }).join('');
     document.querySelector(".js-product-list-wrap").innerHTML = listProductsDom.innerHTML;
 };
@@ -56,16 +59,17 @@ Shop.prototype.buildShoppingCart = function(){
       return;
     }
     shopingCartT.innerHTML = this.shoppingCart.map(function(val){
-        var oneElem = document.createElement('div'),
-        itemElem = products.find(item => item.id == val.productId);
-        oneElem.innerHTML = self.listOfShoppingCart;
-        oneElem.querySelector(".js-one-product-name").textContent = itemElem.name;
-        oneElem.querySelector(".js-one-product-quantity").textContent = val.quantity;
+        var oneElem = self.listOfShoppingCart,
+            itemElem = products.find(item => item.id == val.productId);
+
+        oneElem = oneElem.replace(/{{name}}/g, itemElem.name);
+        oneElem = oneElem.replace(/{{quantity}}/g, val.quantity);
         countProducts += val.quantity;
-        oneElem.querySelector(".js-one-product-price").textContent = '$' + (val.quantity * itemElem.price).toFixed(2);
-        oneElem.querySelector(".js-one-product-line").dataset.prId = val.productId;
+        oneElem = oneElem.replace(/{{price}}/g, '$' + (val.quantity * itemElem.price).toFixed(2));
+        oneElem = oneElem.replace(/{{product-id}}/g, val.productId);
         totalPrice += val.quantity * itemElem.price;
-        return oneElem.innerHTML;
+
+        return oneElem;
     }).join('');
     totalLineT.innerHTML = this.totalLine;
     totalLineT.querySelector(".js-cart-total").textContent = '$' + totalPrice.toFixed(2) ;
@@ -86,6 +90,7 @@ Shop.prototype.addToShoppingCart = function(productId, quantity){
         if(allListInCart[i].productId == productId) {
             allListInCart[i].quantity += 1;
             newLine = false;
+            break;
         }
     }
     if(newLine){
@@ -102,8 +107,10 @@ Shop.prototype.removeToShoppingCart = function(productId){
         if(allListInCart[i].productId == productId) {
             if( 1 < allListInCart[i].quantity) {
                 allListInCart[i].quantity -= 1;
+                break;
             } else {
                 allListInCart.splice(i, 1);
+                break;
             }
         }
     }

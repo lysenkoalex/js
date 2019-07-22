@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>jQuery Todo</title>
+    <link href="https://fonts.googleapis.com/css?family=Lato:400,700&display=swap" rel="stylesheet">
+    <script src="js/jquery-3.4.1.min.js"></script>
+    <script src="js/script.js"></script>
+</head>
+<body>
+
+  jQuery Todo
+
+  <div id="todo-wrap">
+    <div class="js-new-action-form">
+      <input type="text" class="js-new-action-input" />
+      <button type="button" class="js-new-action-button">Add</button>
+    </div>
+    <div class="js-actions-list"></div>
+  </div>
+
+  <div id="templates" style="display:none;">
+    <div class="one-action-line">
+      <div class="custom-checkbox">check</div>
+      <div class="one-action-text">
+        <p>Text</p>
+      </div>
+      <div class="buttons-wrap">
+        <button type="button" class="remove-action-button">&times;</button>
+        <button type="button" class="remove-action-button">edit</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    jQuery(document).ready(function(){
+      var todo = new Todo();
+    });
+  </script>
+</body>
+</html>

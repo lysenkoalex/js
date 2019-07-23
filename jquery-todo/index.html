@@ -8,6 +8,14 @@
     <link href="https://fonts.googleapis.com/css?family=Lato:400,700&display=swap" rel="stylesheet">
     <script src="js/jquery-3.4.1.min.js"></script>
     <script src="js/script.js"></script>
+    <style>
+      .complited{
+        background: green;
+      }
+      input[readonly]{
+        border-color: transparent;
+      }
+    </style>
 </head>
 <body>
 
@@ -23,13 +31,13 @@
 
   <div id="templates" style="display:none;">
     <div class="one-action-line">
-      <div class="custom-checkbox">check</div>
+      <div class="custom-checkbox js-task-status">check</div>
       <div class="one-action-text">
-        <p>Text</p>
+        <input type="text" readonly value="" />
       </div>
       <div class="buttons-wrap">
         <button type="button" class="remove-action-button">&times;</button>
-        <button type="button" class="remove-action-button">edit</button>
+        <button type="button" class="edit-action-button">edit</button>
       </div>
     </div>
   </div>

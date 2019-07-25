@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+
+    <div id="todo">
+        {{ message }}
+    </div>
+
+    <hr>
+
+    <div id="app">
+      <span v-bind:title="message">time</span>
+    </div>
+
+    <hr>
+
+    <div id="app2">
+        <span v-if="seen">seen</span>
+    </div>
+
+    <hr>
+
+    <div id="app3">
+        <div v-for="todo in todos">
+          {{ todo.text }}
+        </div>
+    </div>
+
+
+    <hr>
+
+    <div id="app-5">
+        <p>{{ message }}</p>
+        <button type="button" name="button" v-on:click="reverseMessage">Click to Reverse Text</button>
+    </div>
+
+
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script>
+      var todo = new Vue({
+        el: "#todo",
+        data: {
+          message: "Hello World!"
+        }
+      });
+
+      var app = new Vue({
+        el: "#app",
+        data: {
+          message: "Loadtime: " + new Date().toLocaleString()
+        }
+      });
+
+      var app2 = new Vue({
+        el: "#app2",
+        data: {
+          seen: true
+        }
+      });
+
+      var app3 = new Vue({
+        el: "#app3",
+        data: {
+          todos: [
+            {text: 'todo 1'},
+            {text: 'todo 2'},
+            {text: 'todo 3'}
+          ]
+        }
+      });
+
+      var app5 = new Vue({
+        el: "#app-5",
+        data: {
+          message: "Hello User"
+        },
+        methods: {
+          reverseMessage: function (){
+            this.message = this.message.split('').reverse().join('')
+          }
+        }
+      });
+    </script>
+</body>
+</html>

@@ -9,55 +9,54 @@
 <body>
 
     <div id="todo">
-        <div class="">
-          <input type="text" name="" value="" v-model="textNewTask">
-          <button type="button" name="button" @click="addTask" v-bind:disabled="isButtonDisabled">Add</button>
-        </div>
-        <ul v-for="(task, index) in taskList" style="list-style:none;">
-          <li>{{ index }} {{ task.text }}<button @click="removeTask(index)">X</button><button>edit</button></li>
+      <div>
+        <input type="text" name="" v-bind:value="textNewTask">
+        <button type="button" name="button" @click="addTask">Add</button>
+      </div>
+      <div class="">
+        <ul>
+          <li v-for="(task, index) in taskList"
+            is = "oneItem"
+            v-bind:text = "todo.text"
+            v-on:remove = "todos.splice(index, 1)"
+          ></li>
         </ul>
+      </div>
     </div>
 
 
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
 
     <script>
+      Vue.component('oneItem', {
+        props: ["text"],
+        template: `
+          <template>
+            <span>{{ text }}</span>
+            <input type="text" v-bind="{{ text }}" />
+            <button @click-"$emit(remove)">X</button>
+            <button @click-"$emit(edit)">E</button>
+          </template>
+        `
+
+      });
+
       var todo = new Vue({
         el: "#todo",
         data: {
-          isButtonDisabled: true,
           textNewTask: "",
           taskList: []
         },
-        created: function() {
-          taskList: {
-            if (undefined == localStorage.getItem('tasksList')) {
-              localStorage.setItem('tasksList', JSON.stringify([]));
-            }
-            this.taskList = JSON.parse(localStorage.getItem('tasksList'));
-          }
-        },
-        watch: {
-          taskList: function() {
-            localStorage.setItem('tasksList', JSON.stringify(this.taskList));
-          },
-          textNewTask: function() {
-            if ( "" == this.textNewTask ){
-              this.isButtonDisabled = true;
-            } else {
-              this.isButtonDisabled = false;
-            }
-          }
-        },
         methods: {
-          addTask: function(){
-            this.taskList.push({ "id":"21231","text": this.textNewTask });
+          addTask: function() {
+            this.taskList.push({ "text": this.textNewTask, "status": false });
             this.textNewTask = "";
           },
-          removeTask: function(data){
-            this.taskList.splice(data, 1);
+          edit: function() {
+            console.log("edit");
           }
         }
+
       });
     </script>
 </body>

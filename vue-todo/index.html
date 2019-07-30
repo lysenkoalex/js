@@ -10,16 +10,18 @@
 
     <div id="todo">
       <div>
-        <input type="text" name="" v-bind:value="textNewTask">
+        <input type="text" name="" value="" v-model="textNewTask">
         <button type="button" name="button" @click="addTask">Add</button>
       </div>
       <div class="">
         <ul>
-          <li v-for="(task, index) in taskList"
-            is = "oneItem"
-            v-bind:text = "todo.text"
-            v-on:remove = "todos.splice(index, 1)"
-          ></li>
+          <one-item v-for="(task, index) in taskList"
+            :key="index"
+            @edit = "editTask(index, $event)"
+            v-bind:complited = "task.status"
+            v-bind:text = "task.text"
+            v-on:remove = "taskList.splice(index, 1)"
+          ></one-item>
         </ul>
       </div>
     </div>
@@ -29,16 +31,32 @@
 
     <script>
       Vue.component('oneItem', {
-        props: ["text"],
-        template: `
-          <template>
-            <span>{{ text }}</span>
-            <input type="text" v-bind="{{ text }}" />
-            <button @click-"$emit(remove)">X</button>
-            <button @click-"$emit(edit)">E</button>
-          </template>
-        `
-
+        props: ["text", "complited"],
+        data: function(){
+          return {
+            isEdit: false,
+            newText: ''
+          }
+        },
+        template: ` \
+          <li> \
+            <input type="checkbox" v-model="complited">
+            <input v-if="isEdit" type="text" v-model="newText"> \
+            <span  v-else>{{ text }}</span> \
+            <button @click="$emit(\'remove\')">X</button> \
+            <button @click="edit">E</button> \
+          </li>`,
+        methods: {
+          edit: function() {
+            if (this.isEdit){
+              this.isEdit = false;
+              this.$emit('edit', this.newText);
+            } else {
+              this.isEdit = true;
+              this.newText = this.text;
+            }
+          }
+        }
       });
 
       var todo = new Vue({
@@ -47,16 +65,31 @@
           textNewTask: "",
           taskList: []
         },
+        created: function() {
+          taskList: {
+            if (undefined == localStorage.getItem('taskList')) {
+              localStorage.setItem('taskList', JSON.stringify([]));
+            }
+            this.taskList = JSON.parse(localStorage.getItem('taskList'));
+          }
+        },
+        watch: {
+          taskList: function() {
+            localStorage.setItem('taskList', JSON.stringify(this.taskList));
+          }
+        },
         methods: {
           addTask: function() {
             this.taskList.push({ "text": this.textNewTask, "status": false });
             this.textNewTask = "";
           },
-          edit: function() {
-            console.log("edit");
+          editTask: function(index, val) {
+            this.$set(this.taskList, index, Object.assign(this.taskList[index], {text: val}));
+          },
+          changeStatus: function(index, val){
+            this.$set(this.taskList, index, Object.assign(this.taskList[index], {status: val}));
           }
         }
-
       });
     </script>
 </body>

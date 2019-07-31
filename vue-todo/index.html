@@ -69,7 +69,12 @@
             }
           },
           changeStatus: function() {
-            console.log("afdasdf");
+            this.newStatus = this.complited;
+            if (this.newStatus) {
+              this.newStatus = false
+            } else {
+              this.newStatus = true
+            }
             this.$emit('status', this.newStatus);
           }
         }

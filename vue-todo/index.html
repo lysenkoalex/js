@@ -5,6 +5,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
+    <style media="screen">
+      .custom-checkbox {
+        width: 18px;
+        height: 18px;
+        border: 1px solid #ccc;
+      }
+      .custom-checkbox.active {
+        background: green;
+      }
+    </style>
 </head>
 <body>
 
@@ -18,6 +28,7 @@
           <one-item v-for="(task, index) in taskList"
             :key="index"
             @edit = "editTask(index, $event)"
+            @status = "changeStatus(index, $event)"
             v-bind:complited = "task.status"
             v-bind:text = "task.text"
             v-on:remove = "taskList.splice(index, 1)"
@@ -35,12 +46,13 @@
         data: function(){
           return {
             isEdit: false,
-            newText: ''
+            newText: '',
+            newStatus: false
           }
         },
         template: ` \
           <li> \
-            <input type="checkbox" v-model="complited">
+            <div class="custom-checkbox" v-bind:class="{active: complited}" @click="changeStatus"></div>
             <input v-if="isEdit" type="text" v-model="newText"> \
             <span  v-else>{{ text }}</span> \
             <button @click="$emit(\'remove\')">X</button> \
@@ -55,6 +67,10 @@
               this.isEdit = true;
               this.newText = this.text;
             }
+          },
+          changeStatus: function() {
+            console.log("afdasdf");
+            this.$emit('status', this.newStatus);
           }
         }
       });

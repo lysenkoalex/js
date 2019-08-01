@@ -26,7 +26,7 @@
       <div class="">
         <ul>
           <one-item v-for="(task, index) in taskList"
-            :key="index"
+            :key="task.id"
             @edit = "editTask(index, $event)"
             @status = "changeStatus(index, $event)"
             v-bind:complited = "task.status"
@@ -101,7 +101,7 @@
         },
         methods: {
           addTask: function() {
-            this.taskList.push({ "text": this.textNewTask, "status": false });
+            this.taskList.push({"id": Date.now() , "text": this.textNewTask, "status": false });
             this.textNewTask = "";
           },
           editTask: function(index, val) {

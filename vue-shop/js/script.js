@@ -1,20 +1,25 @@
 Vue.component('product-list', {
-  template: {
-
-  }
+  props: ['product'],
+  template: `
+    <div>
+      <h2>{{product.name}}</h2>
+      <p>{{product.desc}}</p>
+      <button>Add To Cart</button>
+      <small>{{product.id}}</small>
+      <hr />
+    </div>
+    `
 });
 
 Vue.component('shopping-list', {
-  template: {
-
-  }
+  template: {}
 });
 
 
 var cartPage = new Vue({
   el: '#cart-page',
   data: {
-    shopping
+    shoppingList: [],
     productsList: [
       {id: "product1", name: "Name of Product 1", desc: "Description of Product 1"},
       {id: "product2", name: "Name of Product 2", desc: "Description of Product 2"},

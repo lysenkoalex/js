@@ -17,8 +17,17 @@
     </style>
 </head>
 <body>
-    <div id="cart-page">
+    <div id="cart-page" style="width: 1000px;margin: 0 auto;">
+      <div style="float: left; width: 50%">
+        <product-list class=""
+          v-for="product in productsList"
+          v-bind:key="product.id"
+          v-bind:product="product"
+        ></product-list>
+      </div>
+      <div style="float: left; width: 50%">
 
+      </div>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
     <script src="js/script.js"></script>

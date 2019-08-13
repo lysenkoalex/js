@@ -24,7 +24,11 @@ Vue.component('shopping-list', {
 var cartPage = new Vue({
   el: '#cart-page',
   data: {
-    shoppingList: [],
+    shoppingList: [
+      {"id":"product1","quantity":10},
+      {"id":"product3","quantity":1},
+      {"id":"product2","quantity":5}
+    ],
     productsList: [
       {id: "product1", name: "Name of Product 1", desc: "Description of Product 1", price: 10.99},
       {id: "product2", name: "Name of Product 2", desc: "Description of Product 2", price: 20.16},
@@ -32,9 +36,21 @@ var cartPage = new Vue({
       {id: "product4", name: "Name of Product 4", desc: "Description of Product 4", price: 0.95}
     ]
   },
+  created() {
+    //this.shoppingList = JSON.parse(localStorage.getItem('shopingCart')) || [];
+  },
   methods: {
     addToCartM: function(id) {
-      console.log(id);
+      //this.shoppingList.push({'id': id, 'quantity': 1});
+      for(var i=0; i<this.shoppingList.length; i++) {
+        if(this.shoppingList[i].id == id) {
+          console.log("есть такой продукт");
+          return true;
+        }
+      }
+    },
+    changeShoppingCart: function() {
+
     }
   }
 });

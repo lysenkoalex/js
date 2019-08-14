@@ -45,6 +45,7 @@ var cartPage = new Vue({
       for(var i=0; i<this.shoppingList.length; i++) {
         if(this.shoppingList[i].id == id) {
           console.log("есть такой продукт");
+          Object.assign(this.shoppingList[i], {quantity: 123})
           return true;
         }
       }

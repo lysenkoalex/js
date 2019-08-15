@@ -6,14 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
     <style media="screen">
-      .custom-checkbox {
-        width: 18px;
-        height: 18px;
-        border: 1px solid #ccc;
-      }
-      .custom-checkbox.active {
-        background: green;
-      }
+      
     </style>
 </head>
 <body>
@@ -27,10 +20,11 @@
         ></product-list>
       </div>
       <div style="float: left; width: 50%">
-        <!--<shopping-list
+        <shopping-list
           v-for="item in shoppingList"
           :key="item.id"
-        ></shopping-list>-->
+          :item="item"
+        ></shopping-list>
       </div>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>

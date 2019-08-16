@@ -6,12 +6,17 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
     <style media="screen">
-      
+      *{
+        box-sizing: border-box;
+      }
+      .text-center {
+        text-align: center;
+      }
     </style>
 </head>
 <body>
     <div id="cart-page" style="width: 1000px;margin: 0 auto;">
-      <div style="float: left; width: 50%">
+      <div style="float: left; width: 50%; padding-right: 20px;">
         <product-list class=""
           v-for="product in productsList"
           :key="product.id"
@@ -20,11 +25,15 @@
         ></product-list>
       </div>
       <div style="float: left; width: 50%">
+        <h2 class="text-center">Cart (<cart-counter v-bind:props-list="shoppingList"></cart-counter>)</h2>
         <shopping-list
           v-for="item in shoppingList"
           :key="item.id"
           :item="item"
+          @add-to-cart = "addToCartM"
+          @remove-to-cart = "removeToCartM"
         ></shopping-list>
+        <total-line v-bind:props-list="shoppingList"></total-line>
       </div>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>

@@ -12,19 +12,33 @@
       .text-center {
         text-align: center;
       }
+      .columns-wrap {
+        width: 1000px;
+        margin: 0 auto;
+      }
+      .left-column {
+        float: left;
+        width: 50%;
+        padding-right: 20px;
+      }
+      .right-column {
+        float: left;
+        width: 50%
+      }
     </style>
 </head>
 <body>
-    <div id="cart-page" style="width: 1000px;margin: 0 auto;">
-      <div style="float: left; width: 50%; padding-right: 20px;">
-        <product-list class=""
+    <div id="cart-page" class="columns-wrap">
+      <div class="left-column">
+        <h2>List of products</h2>
+        <product-list
           v-for="product in productsList"
           :key="product.id"
           :product="product"
           @add-to-cart = "addToCartM"
         ></product-list>
       </div>
-      <div style="float: left; width: 50%">
+      <div class="right-column">
         <h2 class="text-center">Cart (<cart-counter v-bind:props-list="shoppingList"></cart-counter>)</h2>
         <shopping-list
           v-for="item in shoppingList"

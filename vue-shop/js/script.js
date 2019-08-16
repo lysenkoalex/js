@@ -2,10 +2,10 @@ Vue.component('product-list', {
   props: ['product'],
   template: `
     <div>
-      <h2>{{product.name}}</h2>
+      <h3>{{product.name}}</h3>
       <p>{{product.desc}}</p>
+      $<span>{{product.price}}</span>
       <button @click="addToCartClicked">Add To Cart</button>
-      <span>$ {{product.price}}</span>
       <hr />
     </div>
     `,
@@ -55,7 +55,7 @@ Vue.component('cart-counter',{
 Vue.component('total-line',{
   props: ['propsList'],
   template: `
-    <span v-if="propsList.length"><b>Total:</b> {{total}}</span>
+    <p v-if="propsList.length"><b>Total:</b> $<span>{{total}}</span></p>
     <h4 class="text-center" v-else>Your cart is empty</h4>
   `,
   computed: {

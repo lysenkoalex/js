@@ -77,7 +77,6 @@ var productListColection = [
 ];
 
 var productsListMap = {};
-
 productListColection.forEach(function(pr, index) {
   productsListMap[pr.id] = index;
 })
@@ -126,8 +125,6 @@ var cartPage = new Vue({
           }
         }
       }
-    },
-    changeShoppingCart: function() {
     }
   }
 });

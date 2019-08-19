@@ -1,19 +1,60 @@
 Vue.component('list-of-days', {
     props: ['day'],
     template: `
-        <div class="col-md-2" v-bind:class="{ 
-            'weekend-day': day.isWeekend, 
-            'next-month': day.isNotActiveMonth, 
-            'today-day': day.isCurrentDay 
+        <div class="col-md-2" v-bind:class="{
+            'weekend-day': day.isWeekend,
+            'next-month': day.isNotActiveMonth,
+            'today-day': day.isCurrentDay
         }">{{day.numberDay}}</div>
     `,
+});
+
+Vue.component('calendar-nav', {
+    props: ['date'],
+    template: `
+      <div>
+        <button type="button" class="btn btn-default" @click="todayButtonClicked">Today</button>
+        <div class="btn-group" role="group">
+            <button type="button" class="btn btn-default" @click="backMonthClicked">
+                <span class="glyphicon glyphicon-menu-left" aria-hidden="true"></span>
+            </button>
+            <button type="button" class="btn btn-default">September</button>
+            <button type="button" class="btn btn-default" @click="nextMonthClicked">
+                <span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>
+            </button>
+        </div>
+        <div class="btn-group" role="group">
+            <button type="button" class="btn btn-default">
+                <span class="glyphicon glyphicon-menu-left" aria-hidden="true"></span>
+            </button>
+            <button type="button" class="btn btn-default">2019</button>
+            <button type="button" class="btn btn-default">
+                <span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>
+            </button>
+        </div>
+      </div>
+    `,
+    methods: {
+      todayButtonClicked(){
+        console.log("click todayButtonClicked");
+        this.$emit('change-date');
+      },
+      backMonthClicked(){
+        console.log("click backMonthClicked "+ this.date.getMonth());
+        this.$emit('change-date', this.selectedYear, this.date.getMonth()-1);
+      },
+      nextMonthClicked(){
+        console.log("click nextMonthClicked "+ this.date.getMonth());
+        this.$emit('change-date', this.selectedYear, this.date.getMonth()+1);
+      }
+    },
 });
 
 
 var calendarApp = new Vue({
     el: "#calendar-page",
     data: {
-        currentDay: new Date(),
+        currentDay: new Date(2019, 2, 2),
         calendarArray: [],
     },
     computed: {
@@ -47,11 +88,11 @@ var calendarApp = new Vue({
         },
         addDayInArray(day, year, month) {
             this.calendarArray.push({
-                numberDay: day, 
-                month: month, 
-                year: year, 
+                numberDay: day,
+                month: month,
+                year: year,
                 isNotActiveMonth: this.isNotActiveMonth(month),
-                isCurrentDay: this.isCurrentDay(year, month, day), 
+                isCurrentDay: this.isCurrentDay(year, month, day),
                 isWeekend: this.isWeekend(year, month, day),
             });
         },
@@ -61,7 +102,9 @@ var calendarApp = new Vue({
                 daysInCurrentMonth = selectedDate.daysInMonth(this.selectedYear, this.selectedMonth),
                 viewDaysInLastMonth = daysInLastMonth - selectedDate.getDay()+1,
                 numberNextMonth = 1;
-    
+
+            this.calendarArray = [];
+
             for(let i = viewDaysInLastMonth; i <= daysInLastMonth; i++) {
                 this.addDayInArray(i, this.selectedYear, this.selectedMonth-1);
             }
@@ -72,16 +115,23 @@ var calendarApp = new Vue({
                 this.addDayInArray(numberNextMonth++, this.selectedYear, this.selectedMonth+1);
             }
             return this.calendarArray;
+        },
+        changeDate(year, month){
+          var thisYear = year || new Date().getFullYear();
+          var thisMonth = month || new Date().getMonth();
+          this.currentDay = new Date(thisYear, thisMonth);
+          this.calcMonth();
+          console.log("changeDate");
         }
     },
     created: function(){
         Date.prototype.daysInMonth = function(year, month) {
-            var thisYear = year || this.getFullYear();
-            var thisMonth = month || this.getMonth();
+            var thisYear = year || new Date().getFullYear();
+            var thisMonth = month || new Date().getMonth();
             return 33 - new Date(thisYear, thisMonth, 33).getDate();
         };
         this.calcMonth();
     }
-    
+
 
 });

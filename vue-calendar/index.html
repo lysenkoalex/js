@@ -35,6 +35,8 @@
                 <div class="col-xs-14 text-center">
                   <calendar-nav
                     :date="currentDay"
+                    @prev-month="prevMonth"
+                    @next-month="nextMonth"
                     @change-date = "changeDate"
                   ></calendar-nav>
                 </div>

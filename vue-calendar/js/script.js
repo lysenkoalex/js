@@ -41,11 +41,11 @@ Vue.component('calendar-nav', {
       },
       backMonthClicked(){
         console.log("click backMonthClicked "+ this.date.getMonth());
-        this.$emit('change-date', this.selectedYear, this.date.getMonth()-1);
+        this.$emit('prev-month');
       },
       nextMonthClicked(){
         console.log("click nextMonthClicked "+ this.date.getMonth());
-        this.$emit('change-date', this.selectedYear, this.date.getMonth()+1);
+        this.$emit('next-month');
       }
     },
 });
@@ -98,7 +98,7 @@ var calendarApp = new Vue({
         },
         calcMonth(){
             var selectedDate = new Date(this.selectedYear, this.selectedMonth, 1),
-                daysInLastMonth = selectedDate.daysInMonth(this.selectedYear, this.selectedMonth-1),
+                daysInLastMonth = selectedDate.daysInMonth(this.selectedYear, this.currentDay.getMonth()-1),
                 daysInCurrentMonth = selectedDate.daysInMonth(this.selectedYear, this.selectedMonth),
                 viewDaysInLastMonth = daysInLastMonth - selectedDate.getDay()+1,
                 numberNextMonth = 1;
@@ -106,13 +106,13 @@ var calendarApp = new Vue({
             this.calendarArray = [];
 
             for(let i = viewDaysInLastMonth; i <= daysInLastMonth; i++) {
-                this.addDayInArray(i, this.selectedYear, this.selectedMonth-1);
+                this.addDayInArray(i, this.selectedYear,  this.currentDay.getMonth()-1);
             }
             for(let i=1; i <= daysInCurrentMonth; i++ ){
                 this.addDayInArray(i, this.selectedYear, this.selectedMonth);
             }
             for(let i=this.calendarArray.length; i < 42; i++){
-                this.addDayInArray(numberNextMonth++, this.selectedYear, this.selectedMonth+1);
+                this.addDayInArray(numberNextMonth++, this.selectedYear, this.currentDay.getMonth()+1);
             }
             return this.calendarArray;
         },
@@ -121,7 +121,16 @@ var calendarApp = new Vue({
           var thisMonth = month || new Date().getMonth();
           this.currentDay = new Date(thisYear, thisMonth);
           this.calcMonth();
-          console.log("changeDate");
+        },
+        prevMonth(){
+          this.currentDay.setMonth(this.currentDay.getMonth() - 1);
+          this.currentDay = new Date(this.currentDay);
+          this.calcMonth();
+        },
+        nextMonth(){
+          this.currentDay.setMonth(this.currentDay.getMonth() + 1);
+          this.currentDay = new Date(this.currentDay);
+          this.calcMonth();
         }
     },
     created: function(){

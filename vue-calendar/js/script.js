@@ -13,61 +13,64 @@ Vue.component('calendar-nav', {
     props: ['date'],
     template: `
       <div>
-        <button type="button" class="btn btn-default" @click="todayButtonClicked">Today</button>
+        <button type="button" class="btn btn-default" @click="$emit(\'change-date\')">Today</button>
         <div class="btn-group" role="group">
-            <button type="button" class="btn btn-default" @click="backMonthClicked">
+            <button type="button" class="btn btn-default" @click="$emit(\'prev-month\')">
                 <span class="glyphicon glyphicon-menu-left" aria-hidden="true"></span>
             </button>
-            <button type="button" class="btn btn-default">September</button>
-            <button type="button" class="btn btn-default" @click="nextMonthClicked">
+            <button type="button" class="btn btn-default">{{currentMonth}}</button>
+            <button type="button" class="btn btn-default" @click="$emit(\'next-month\')">
                 <span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>
             </button>
         </div>
         <div class="btn-group" role="group">
-            <button type="button" class="btn btn-default">
+            <button type="button" class="btn btn-default" @click="$emit(\'prev-year\')">
                 <span class="glyphicon glyphicon-menu-left" aria-hidden="true"></span>
             </button>
-            <button type="button" class="btn btn-default">2019</button>
-            <button type="button" class="btn btn-default">
+            <button type="button" class="btn btn-default">{{date.getFullYear()}}</button>
+            <button type="button" class="btn btn-default" @click="$emit(\'next-year\')">
                 <span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>
             </button>
         </div>
       </div>
     `,
-    methods: {
-      todayButtonClicked(){
-        console.log("click todayButtonClicked");
-        this.$emit('change-date');
-      },
-      backMonthClicked(){
-        console.log("click backMonthClicked "+ this.date.getMonth());
-        this.$emit('prev-month');
-      },
-      nextMonthClicked(){
-        console.log("click nextMonthClicked "+ this.date.getMonth());
-        this.$emit('next-month');
+    computed: {
+      currentMonth: function(){
+        var monthArray = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+        return monthArray[this.date.getMonth()];
       }
     },
 });
 
-
 var calendarApp = new Vue({
     el: "#calendar-page",
     data: {
-        currentDay: new Date(2019, 2, 2),
-        calendarArray: [],
+        currentDay: new Date(),
     },
     computed: {
-        selectedMonth: function(){
-            return this.currentDay.getMonth();
-        },
-        selectedYear: function(){
-            return this.currentDay.getFullYear();
+        calendarArray: function(){
+          var calendarArr = [],
+              selectedDate = new Date(this.currentDay.getFullYear(), this.currentDay.getMonth(), 1),
+              daysInLastMonth = selectedDate.daysInMonth(this.currentDay.getFullYear(), this.currentDay.getMonth()-1),
+              daysInCurrentMonth = selectedDate.daysInMonth(this.currentDay.getFullYear(), this.currentDay.getMonth()),
+              viewDaysInLastMonth = daysInLastMonth - selectedDate.getDay()+1,
+              numberNextMonth = 1;
+
+          for(let i = viewDaysInLastMonth; i <= daysInLastMonth; i++) {
+              calendarArr.push(this.addDayInArray(this.currentDay.getFullYear(), this.currentDay.getMonth()-1, i));
+          }
+          for(let i=1; i <= daysInCurrentMonth; i++ ){
+              calendarArr.push(this.addDayInArray(this.currentDay.getFullYear(), this.currentDay.getMonth(), i));
+          }
+          for(let i=calendarArr.length; i < 42; i++){
+              calendarArr.push(this.addDayInArray(this.currentDay.getFullYear(), this.currentDay.getMonth()+1, numberNextMonth++));
+          }
+          return calendarArr;
         }
     },
     methods: {
         isNotActiveMonth(month) {
-            if(month == this.selectedMonth) return false;
+            if(month == this.currentDay.getMonth()) return false;
             return true;
         },
         isCurrentDay(year, month, day) {
@@ -86,52 +89,37 @@ var calendarApp = new Vue({
                 return false;
             }
         },
-        addDayInArray(day, year, month) {
-            this.calendarArray.push({
+        addDayInArray(year, month, day) {
+            return {
                 numberDay: day,
                 month: month,
                 year: year,
                 isNotActiveMonth: this.isNotActiveMonth(month),
                 isCurrentDay: this.isCurrentDay(year, month, day),
                 isWeekend: this.isWeekend(year, month, day),
-            });
-        },
-        calcMonth(){
-            var selectedDate = new Date(this.selectedYear, this.selectedMonth, 1),
-                daysInLastMonth = selectedDate.daysInMonth(this.selectedYear, this.currentDay.getMonth()-1),
-                daysInCurrentMonth = selectedDate.daysInMonth(this.selectedYear, this.selectedMonth),
-                viewDaysInLastMonth = daysInLastMonth - selectedDate.getDay()+1,
-                numberNextMonth = 1;
-
-            this.calendarArray = [];
-
-            for(let i = viewDaysInLastMonth; i <= daysInLastMonth; i++) {
-                this.addDayInArray(i, this.selectedYear,  this.currentDay.getMonth()-1);
-            }
-            for(let i=1; i <= daysInCurrentMonth; i++ ){
-                this.addDayInArray(i, this.selectedYear, this.selectedMonth);
-            }
-            for(let i=this.calendarArray.length; i < 42; i++){
-                this.addDayInArray(numberNextMonth++, this.selectedYear, this.currentDay.getMonth()+1);
-            }
-            return this.calendarArray;
+            };
         },
         changeDate(year, month){
           var thisYear = year || new Date().getFullYear();
           var thisMonth = month || new Date().getMonth();
           this.currentDay = new Date(thisYear, thisMonth);
-          this.calcMonth();
         },
         prevMonth(){
           this.currentDay.setMonth(this.currentDay.getMonth() - 1);
           this.currentDay = new Date(this.currentDay);
-          this.calcMonth();
         },
         nextMonth(){
           this.currentDay.setMonth(this.currentDay.getMonth() + 1);
           this.currentDay = new Date(this.currentDay);
-          this.calcMonth();
-        }
+        },
+        prevYear(){
+          this.currentDay.setYear(this.currentDay.getFullYear() - 1);
+          this.currentDay = new Date(this.currentDay);
+        },
+        nextYear(){
+          this.currentDay.setYear(this.currentDay.getFullYear() + 1);
+          this.currentDay = new Date(this.currentDay);
+        },
     },
     created: function(){
         Date.prototype.daysInMonth = function(year, month) {
@@ -139,8 +127,5 @@ var calendarApp = new Vue({
             var thisMonth = month || new Date().getMonth();
             return 33 - new Date(thisYear, thisMonth, 33).getDate();
         };
-        this.calcMonth();
     }
-
-
 });

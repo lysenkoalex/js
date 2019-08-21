@@ -51,8 +51,8 @@ var calendarApp = new Vue({
         calendarArray: function(){
           var calendarArr = [],
               selectedDate = new Date(this.currentDay.getFullYear(), this.currentDay.getMonth(), 1),
-              daysInLastMonth = selectedDate.daysInMonth(this.currentDay.getFullYear(), this.currentDay.getMonth()-1),
-              daysInCurrentMonth = selectedDate.daysInMonth(this.currentDay.getFullYear(), this.currentDay.getMonth()),
+              daysInLastMonth = this.daysInMonth(this.currentDay.getFullYear(), this.currentDay.getMonth()-1),
+              daysInCurrentMonth = this.daysInMonth(this.currentDay.getFullYear(), this.currentDay.getMonth()),
               viewDaysInLastMonth = daysInLastMonth - selectedDate.getDay()+1,
               numberNextMonth = 1;
 
@@ -69,6 +69,9 @@ var calendarApp = new Vue({
         }
     },
     methods: {
+        daysInMonth(year, month) {
+            return 33 - new Date(year, month, 33).getDate();
+        },
         isNotActiveMonth(month) {
             if(month == this.currentDay.getMonth()) return false;
             return true;
@@ -120,12 +123,5 @@ var calendarApp = new Vue({
           this.currentDay.setYear(this.currentDay.getFullYear() + 1);
           this.currentDay = new Date(this.currentDay);
         },
-    },
-    created: function(){
-        Date.prototype.daysInMonth = function(year, month) {
-            var thisYear = year || new Date().getFullYear();
-            var thisMonth = month || new Date().getMonth();
-            return 33 - new Date(thisYear, thisMonth, 33).getDate();
-        };
     }
 });

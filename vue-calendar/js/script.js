@@ -1,12 +1,38 @@
 Vue.component('list-of-days', {
-    props: ['day'],
+    props: ['day', 'todos'],
     template: `
         <div class="col-md-2" v-bind:class="{
             'weekend-day': day.isWeekend,
             'next-month': day.isNotActiveMonth,
             'today-day': day.isCurrentDay
-        }">{{day.numberDay}}</div>
+        }">
+          {{day.numberDay}}
+          <todo-list v-for="item in items" :data="item"></todo-list>
+        </div>
     `,
+    computed: {
+      items: function() {
+        var dateStr = [this.day.year, this.day.month, this.day.numberDay].join(','),
+            newArr = [];
+
+        for(var i=0; i < this.todos.length; i++){
+          if(dateStr == this.todos[i].date) {
+            newArr.push(this.todos[i]);
+          }
+        }
+        
+        return newArr;
+      }
+    }
+});
+Vue.component('todo-list', {
+  props: ['data'],
+  template: `
+    <div>
+      <div class="custom-checkbox"></div>
+      <span>{{ data.text }}</span>
+    </div>`,
+
 });
 
 Vue.component('calendar-nav', {
@@ -66,6 +92,10 @@ var calendarApp = new Vue({
               calendarArr.push(this.addDayInArray(this.currentDay.getFullYear(), this.currentDay.getMonth()+1, numberNextMonth++));
           }
           return calendarArr;
+        },
+        todoList: function() {
+          var todoListArr = JSON.parse(localStorage.getItem('taskList'));
+          return todoListArr;
         }
     },
     methods: {
@@ -125,3 +155,12 @@ var calendarApp = new Vue({
         },
     }
 });
+
+
+
+[
+  {"date": "2019, 7, 22", "text":"Task 1","status":false},
+  {"date": "2019, 7, 22", "text":"Task 2","status":true},
+  {"date": "2019, 7, 20", "text":"Task 3","status":false},
+  {"date": "2019, 7, 27", "text":"Task 4","status":true}
+]

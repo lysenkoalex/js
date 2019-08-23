@@ -1,30 +1,24 @@
 Vue.component('list-of-days', {
     props: ['day', 'todos'],
     template: `
-        <div class="col-md-2" v-bind:class="{
+        <div class="col-md-2 one-day-box" v-bind:class="{
             'weekend-day': day.isWeekend,
             'next-month': day.isNotActiveMonth,
             'today-day': day.isCurrentDay
         }">
           {{day.numberDay}}
           <todo-list v-for="item in items" :data="item"></todo-list>
+          <a href="javascript:void(0)" class="addTaskButton"  data-toggle="modal" data-target="#myModal"><span>+</span></a>
         </div>
     `,
     computed: {
       items: function() {
-        var dateStr = [this.day.year, this.day.month, this.day.numberDay].join(','),
-            newArr = [];
-
-        for(var i=0; i < this.todos.length; i++){
-          if(dateStr == this.todos[i].date) {
-            newArr.push(this.todos[i]);
-          }
-        }
-        
-        return newArr;
+        var item = this.todos[[this.day.numberDay, this.day.month, this.day.year].join('.')];
+        if(item) return item;
       }
     }
 });
+
 Vue.component('todo-list', {
   props: ['data'],
   template: `
@@ -33,6 +27,29 @@ Vue.component('todo-list', {
       <span>{{ data.text }}</span>
     </div>`,
 
+});
+
+Vue.component('add-task-popup', {
+  props: [],
+  template: `
+  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title" id="myModalLabel">Modal title</h4>
+        </div>
+        <div class="modal-body">
+          ...
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary">Save changes</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  `,
 });
 
 Vue.component('calendar-nav', {
@@ -155,12 +172,3 @@ var calendarApp = new Vue({
         },
     }
 });
-
-
-
-[
-  {"date": "2019, 7, 22", "text":"Task 1","status":false},
-  {"date": "2019, 7, 22", "text":"Task 2","status":true},
-  {"date": "2019, 7, 20", "text":"Task 3","status":false},
-  {"date": "2019, 7, 27", "text":"Task 4","status":true}
-]

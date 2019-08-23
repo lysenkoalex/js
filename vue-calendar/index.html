@@ -25,6 +25,43 @@
         .calendar-body .today-day {
             background: rgba(0, 0, 255, .4  );
         }
+        .one-day-box {
+          position: relative;
+        }
+        .addTaskButton {
+            position: absolute;
+            top: 0;
+            right: 0;
+            width:  16px;
+            height: 16px;
+            display: none;
+            text-align: center;
+            line-height: 16px;
+            color: #fff;
+        }
+        .one-day-box:hover .addTaskButton{
+          display: block;
+        }
+        .addTaskButton::before {
+          position: absolute;
+          content: "";
+          display: block;
+          top: 0;
+          right: 0;
+          width: 0;
+          height: 0;
+          border-style: solid;
+          border-width: 0 26px 26px 0;
+          border-color: transparent #007bff transparent transparent;
+        }
+        .addTaskButton span {
+          position: relative;
+        }
+        .addTaskButton:hover,
+        .addTaskButton:focus{
+          text-decoration: none;
+          color: #fff;
+        }
     </style>
 </head>
 <body>
@@ -63,6 +100,7 @@
                     ></list-of-days>
                 </div>
             </div>
+            <add-task-popup></add-task-popup>
         </div>
     </div>
     <script src="https://code.jquery.com/jquery-1.12.4.min.js" integrity="sha384-nvAa0+6Qg9clwYCGGPpDQLVpLNn0fRaROjHqs13t4Ggj3Ez50XnGQqc/r8MhnRDZ" crossorigin="anonymous"></script>

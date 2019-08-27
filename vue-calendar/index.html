@@ -28,7 +28,7 @@
         .one-day-box {
           position: relative;
         }
-        .addTaskButton {
+        .editTaskButton {
             position: absolute;
             top: 0;
             right: 0;
@@ -39,10 +39,10 @@
             line-height: 16px;
             color: #fff;
         }
-        .one-day-box:hover .addTaskButton{
+        .one-day-box:hover .editTaskButton{
           display: block;
         }
-        .addTaskButton::before {
+        .editTaskButton::before {
           position: absolute;
           content: "";
           display: block;
@@ -54,13 +54,27 @@
           border-width: 0 26px 26px 0;
           border-color: transparent #007bff transparent transparent;
         }
-        .addTaskButton span {
+        .editTaskButton span {
           position: relative;
+          font-size: 10px;
         }
-        .addTaskButton:hover,
-        .addTaskButton:focus{
+        .editTaskButton:hover,
+        .editTaskButton:focus{
           text-decoration: none;
           color: #fff;
+        }
+        .custom-checkbox {
+          width: 12px;
+          height: 12px;
+          display: inline-block;
+          border: 1px solid #000;
+          position: relative;
+          top: 1px;
+          background: #fff;
+          border-radius: 2px;
+        }
+        .custom-checkbox.done {
+          background: green
         }
     </style>
 </head>
@@ -97,10 +111,14 @@
                         :key="day.indexOf"
                         :day="day"
                         :todos = "todoList"
+                        @change-select-date = "changeSelectDate"
                     ></list-of-days>
                 </div>
             </div>
-            <add-task-popup></add-task-popup>
+            <add-task-popup
+              :date="selectDate"
+              :todos = "todoList"
+            ></add-task-popup>
         </div>
     </div>
     <script src="https://code.jquery.com/jquery-1.12.4.min.js" integrity="sha384-nvAa0+6Qg9clwYCGGPpDQLVpLNn0fRaROjHqs13t4Ggj3Ez50XnGQqc/r8MhnRDZ" crossorigin="anonymous"></script>

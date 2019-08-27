@@ -8,7 +8,7 @@ Vue.component('list-of-days', {
         }">
           {{day.numberDay}}
           <todo-list v-for="item in items" :data="item"></todo-list>
-          <a href="javascript:void(0)" class="addTaskButton"  data-toggle="modal" data-target="#myModal"><span>+</span></a>
+          <a class="editTaskButton"  data-toggle="modal" data-target="#myModal" @click="$emit(\'change-select-date\', day)"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span></a>
         </div>
     `,
     computed: {
@@ -16,31 +16,74 @@ Vue.component('list-of-days', {
         var item = this.todos[[this.day.numberDay, this.day.month, this.day.year].join('.')];
         if(item) return item;
       }
-    }
+    },
 });
 
 Vue.component('todo-list', {
   props: ['data'],
   template: `
     <div>
-      <div class="custom-checkbox"></div>
+      <div class="custom-checkbox" v-bind:class="{'done': data.status,}"></div>
       <span>{{ data.text }}</span>
     </div>`,
 
 });
 
+Vue.component('todo-list-popup', {
+  props: ['data'],
+  data: function(){
+    return {
+      isEdit: false,
+      newText: '',
+      newStatus: false
+    }
+  },
+  template: `
+    <div>
+      <div class="custom-checkbox" v-bind:class="{'done': data.status,}" @click="changeStatus"></div>
+      <span>{{ data.text }}</span>
+    </div>`,
+    methods: {
+      changeStatus: function() {
+        this.newStatus = this.data.status;
+        if (this.newStatus) {
+          this.newStatus = false
+        } else {
+          this.newStatus = true
+        }
+        this.$emit('status', this.newStatus);
+      }
+    }
+
+});
+
 Vue.component('add-task-popup', {
-  props: [],
+  props: ['date', 'todos'],
+  data: function () {
+    return {
+      textNewTask: "",
+    }
+  },
   template: `
   <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
           <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-          <h4 class="modal-title" id="myModalLabel">Modal title</h4>
+          <h4 class="modal-title" id="myModalLabel">Edit day: {{ headerTitle }}</h4>
         </div>
         <div class="modal-body">
-          ...
+          ...{{ date }}
+
+            <div>
+              <input type="text" name="" value="" v-model="textNewTask">
+              <button type="button" name="button" @click="addTask">Add</button>
+            </div>
+            <todo-list-popup
+              v-for="(item, index) in items"
+              :data="item"
+              @status = "changeStatus(index, $event)"
+            ></todo-list-popup>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -50,6 +93,34 @@ Vue.component('add-task-popup', {
     </div>
   </div>
   `,
+  computed: {
+    headerTitle: function(){
+      return [this.date.numberDay, this.date.month, this.date.year].join('.')
+    },
+    items: function() {
+      var item = this.todos[[this.date.numberDay, this.date.month, this.date.year].join('.')];
+      if(item) return item;
+    }
+  },
+  methods: {
+    addTask: function() {
+      this.items.push({"text": this.textNewTask, "status": false });
+      this.textNewTask = "";
+    },
+    editTask: function(index, val) {
+      this.$set(this.items, index, Object.assign(this.items[index], {"text": val}));
+    },
+    changeStatus: function(index, val){
+
+      // console.log(this.todoList[this.headerTitle][index].status);
+      // calendarApp.todoList["22.7.2019"][0]
+      console.log("asdfsadfs");
+      //this.todos[this.headerTitle][index].status = val;
+      Object.assign(this.todos[this.headerTitle][index], {"status": val});
+
+
+    }
+  }
 });
 
 Vue.component('calendar-nav', {
@@ -89,6 +160,7 @@ var calendarApp = new Vue({
     el: "#calendar-page",
     data: {
         currentDay: new Date(),
+        selectDate: "",
     },
     computed: {
         calendarArray: function(){
@@ -169,6 +241,10 @@ var calendarApp = new Vue({
         nextYear(){
           this.currentDay.setYear(this.currentDay.getFullYear() + 1);
           this.currentDay = new Date(this.currentDay);
+        },
+        changeSelectDate(date) {
+          this.selectDate = date;
+          console.log('Well Done');
         },
     }
 });

@@ -117,7 +117,8 @@
             </div>
             <add-task-popup
               :date="selectDate"
-              :todos = "todoList[selectDate]"
+              v-model="todoList[selectDate]"
+              v-if="selectDate"
             ></add-task-popup>
         </div>
     </div>

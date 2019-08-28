@@ -44,23 +44,24 @@ Vue.component('todo-list-popup', {
     </div>`,
     methods: {
       changeStatus: function() {
-        this.newStatus = this.data.status;
-        if (this.newStatus) {
-          this.newStatus = false
-        } else {
-          this.newStatus = true
-        }
-        this.$emit('status', this.newStatus);
+        // this.newStatus = this.data.status;
+        // if (this.newStatus) {
+        //   this.newStatus = false
+        // } else {
+        //   this.newStatus = true
+        // }
+        this.$emit('status', !this.data.status);
       }
     }
 
 });
 
 Vue.component('add-task-popup', {
-  props: ['date', 'todos'],
+  props: ['date', 'value'],
   data: function () {
     return {
       textNewTask: "",
+      todos: []
     }
   },
   template: `
@@ -72,7 +73,7 @@ Vue.component('add-task-popup', {
             <h4 class="modal-title" id="myModalLabel">Edit day: {{ date }}</h4>
           </div>
           <div class="modal-body">
-            
+
               <div>
                 <input type="text" name="" value="" v-model="textNewTask">
                 <button type="button" name="button" @click="addTask">Add</button>
@@ -85,34 +86,38 @@ Vue.component('add-task-popup', {
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-            <button type="button" class="btn btn-primary">Save changes</button>
+            <button type="button" class="btn btn-primary" @click="saveTodosClicked">Save changes</button>
           </div>
         </div>
       </div>
     </div>
     `,
   computed: {
-    // items: function() {
-    //   var item = this.todos[[this.date.numberDay, this.date.month, this.date.year].join('.')];
-    //   if(item) return item;
-    // }
   },
   methods: {
     addTask: function() {
-      this.items.push({"text": this.textNewTask, "status": false });
-      this.textNewTask = "";
     },
     editTask: function(index, val) {
-      this.$set(this.items, index, Object.assign(this.items[index], {"text": val}));
     },
     changeStatus: function(index, val){
-
-      // console.log(this.todoList[this.headerTitle][index].status);
-      // calendarApp.todoList["22.7.2019"][0]
-      console.log("asdfsadfs");
-      //this.todos[this.headerTitle][index].status = val;
-      Object.assign(this.todos[index], {"status": val});
-
+      this.todos[index].status = val;
+    },
+    saveTodosClicked: function(){
+      this.$emit('input', this.todos);
+    },
+  },
+  watch: {
+    value: {
+      handler: function(newVal, oldVal) {
+        this.todos = JSON.parse(JSON.stringify(newVal));
+      },
+      immediate: true
+    },
+    todos: {
+      handler: function(newTodos) {
+        //this.$emit('input', newTodos);
+      },
+      deep: true
     }
   }
 });
@@ -155,6 +160,10 @@ var calendarApp = new Vue({
     data: {
         currentDay: new Date(),
         selectDate: "",
+        todoList: {}
+    },
+    created: function() {
+      this.loadTodoList();
     },
     computed: {
         calendarArray: function(){
@@ -176,12 +185,11 @@ var calendarApp = new Vue({
           }
           return calendarArr;
         },
-        todoList: function() {
-          var todoListArr = JSON.parse(localStorage.getItem('taskList'));
-          return todoListArr;
-        }
     },
     methods: {
+        loadTodoList() {
+          this.todoList = JSON.parse(localStorage.getItem('taskList')) || {};
+        },
         daysInMonth(year, month) {
             return 33 - new Date(year, month, 33).getDate();
         },

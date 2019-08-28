@@ -26,7 +26,6 @@ Vue.component('todo-list', {
       <div class="custom-checkbox" v-bind:class="{'done': data.status,}"></div>
       <span>{{ data.text }}</span>
     </div>`,
-
 });
 
 Vue.component('todo-list-popup', {
@@ -65,42 +64,38 @@ Vue.component('add-task-popup', {
     }
   },
   template: `
-  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-          <h4 class="modal-title" id="myModalLabel">Edit day: {{ headerTitle }}</h4>
-        </div>
-        <div class="modal-body">
-          ...{{ date }}
-
-            <div>
-              <input type="text" name="" value="" v-model="textNewTask">
-              <button type="button" name="button" @click="addTask">Add</button>
-            </div>
-            <todo-list-popup
-              v-for="(item, index) in items"
-              :data="item"
-              @status = "changeStatus(index, $event)"
-            ></todo-list-popup>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-primary">Save changes</button>
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title" id="myModalLabel">Edit day: {{ date }}</h4>
+          </div>
+          <div class="modal-body">
+            
+              <div>
+                <input type="text" name="" value="" v-model="textNewTask">
+                <button type="button" name="button" @click="addTask">Add</button>
+              </div>
+              <todo-list-popup
+                v-for="(item, index) in todos"
+                :data="item"
+                @status = "changeStatus(index, $event)"
+              ></todo-list-popup>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-primary">Save changes</button>
+          </div>
         </div>
       </div>
     </div>
-  </div>
-  `,
+    `,
   computed: {
-    headerTitle: function(){
-      return [this.date.numberDay, this.date.month, this.date.year].join('.')
-    },
-    items: function() {
-      var item = this.todos[[this.date.numberDay, this.date.month, this.date.year].join('.')];
-      if(item) return item;
-    }
+    // items: function() {
+    //   var item = this.todos[[this.date.numberDay, this.date.month, this.date.year].join('.')];
+    //   if(item) return item;
+    // }
   },
   methods: {
     addTask: function() {
@@ -116,8 +111,7 @@ Vue.component('add-task-popup', {
       // calendarApp.todoList["22.7.2019"][0]
       console.log("asdfsadfs");
       //this.todos[this.headerTitle][index].status = val;
-      Object.assign(this.todos[this.headerTitle][index], {"status": val});
-
+      Object.assign(this.todos[index], {"status": val});
 
     }
   }
@@ -243,8 +237,7 @@ var calendarApp = new Vue({
           this.currentDay = new Date(this.currentDay);
         },
         changeSelectDate(date) {
-          this.selectDate = date;
-          console.log('Well Done');
+          this.selectDate = [date.numberDay, date.month, date.year].join('.');
         },
     }
 });
